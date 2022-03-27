@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+for workspace in /opt/gitea/git/repositories/*/; do
+    for git in ${workspace}*/; do
+        echo ${git}
+        sudo cp $PWD/files/post-receive "${git}hooks/"
+        sudo cp $PWD/files/post-receive.d/github-hook "${git}hooks/post-receive.d/"
+    done
+done

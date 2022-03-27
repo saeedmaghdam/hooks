@@ -1,0 +1,31 @@
+#!/usr/bin/env bash 
+#!/bin/bash
+
+userName="GITHUB_USERNAME"
+password="GITHUB_PASSWORD_OR_TOKEN"
+
+IFS='/'; folders=($PWD)
+repoName=${folders[-1]}
+workspaceName=${folders[-2]}
+
+if ! git config remote.github.url > /dev/null;
+then
+	git remote add github https://${userName}:${password}@github.com/${workspaceName}/${repoName}
+else
+	git remote set-url github https://${userName}:${password}@github.com/${workspaceName}/${repoName}
+fi
+
+
+
+while read oldrev newrev ref
+do
+	if [ $ref = master ] || [ $ref = main ];
+	then
+		echo ">>>>>> Ref $ref received. Deploying $ref branch to github ..."
+		git push github $ref -f
+		echo ">>>>>> Deployed successfully."
+	else
+		echo ">>>>>> Ref $ref successfully received. Doing nothing."
+		
+	fi
+done
