@@ -22,8 +22,14 @@ do
 	if [ $ref = master ] || [ $ref = main ];
 	then
 		echo ">>>>>> Ref $ref received. Deploying $ref branch to github ..."
-		git push github $ref -f
-		echo ">>>>>> Deployed successfully."
+		if git push github $ref -f
+		then
+			echo ">>>>>> Deployed successfully."
+		else
+			echo "************************************************************"
+			echo "***************** FAILED TO PUSH TO GITHUB *****************"
+			echo "************************************************************" 
+		fi
 	else
 		echo ">>>>>> Ref $ref successfully received. Doing nothing."
 		
